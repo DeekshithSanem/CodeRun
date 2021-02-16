@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeRun</title>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    <style type="text/css">
+        body{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: green;
+            background-color:#1C1E1F;
+            margin: 0;
+            padding: 0;
+        }
+        #topwrapper{
+            position:fixed;
+            padding: 5px;   
+            width:100%;
+            height:40px;
+            background-color: black;
+            
+        }
+        .spacer
+        {
+            width: 100%;
+            height: 50px;
+        }
+    
+        #topbuttons{
+            width: 350px;
+            margin: 0 auto;
+            margin-bottom: 3px;
+            
+        }
+        .selectbuttons{
+            float:left;
+            padding: 8px;
+            border: 1px solid green;
+            border-right: none;
+            font-size: 15px;
+            font-weight: 600;
+        }
+        #logo{
+            float:left;
+            font-size: 150%;
+            font-weight:bold;
+            margin-top: 5px;
+
+        }
+        #html{
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+        }
+        #output{
+            border-right: 1px solid green !important;
+            border-right:3px;
+            border-top-right-radius: 3px;
+            border-bottom-right-radius: 3px;
+           
+        }
+        .highlightedbuttons{
+            background-color:cornsilk;
+            
+        }
+        .active{
+            background-color: rgb(137, 235, 183);
+            color: black;
+        }
+        textarea{
+           
+           
+            resize: none;      
+        }
+        .panel{
+            background-color: #1C1E1F;
+            color: chartreuse;
+            border: 2px solid green;
+            border-radius: 3px;
+            float:left;
+            outline: none;
+            padding: 3px;
+            border-left: none;
+        }
+
+        iframe{
+            background-color: white !important;
+        }
+        .hidden{
+            display: none;
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="topwrapper">
+        <div id="logo">CodeRun</div>
+        <div id="topbuttons">
+            <div class="selectbuttons" id="html">HTML</div>
+            <div class="selectbuttons" id="css">Css</div>
+            <div class="selectbuttons" id="javascript">JavaScript</div>
+            <div class="selectbuttons" id="output">Output</div>
+        </div>
+    </div>
+    <div class="spacer">&nbsp;</div>
+    <div id="bodycontainer">
+        <textarea id="htmlarea" class="panel hidden"><p id="firstsec"> world!</p></textarea>
+        <textarea id="cssarea" class="panel hidden">p{color: black;}</textarea>
+        <textarea id="javascriptarea" class="panel hidden"></textarea>
+
+        <iframe id="outputarea" class="panel hidden"></iframe>
+        
+
+
+
+    </div>
+    <script type="text/javascript">
+        function updateoutput(){
+            $("iframe").contents().find("html").html("<html><head><style type='text/css'>"+$("#cssarea").val()+"</style></head><body>"+$("#htmlarea").val()+"</body></html>");
+            document.getElementById("outputarea").contentWindow.eval($("#javascriptarea").val());
+        };
+        
+        $(".selectbuttons").hover(function(){
+                $(this).addClass("highlightedbuttons");
+        },function(){
+                $(this).removeClass("highlightedbuttons");
+        });
+        $(".selectbuttons").click(function(){
+                $(this).toggleClass("active");
+                var areaid=$(this).attr("id")+"area";
+                $("#" + areaid).toggleClass("hidden");
+                var activeareas=4-$(".hidden").length;
+                $(".panel").width(($(window).width()/activeareas)-8);
+        });
+        $(".panel").height($(window).height()-$("#topwrapper").height()-18);
+        $(".panel").width(($(window).width()/2)-18);
+        updateoutput();
+        $("textarea").on('change keyup paste', function() {
+            updateoutput();
+        });
+        
+
+        
+
+    </script>
+
+    
+</body>
+</html>
